@@ -19,7 +19,9 @@ type Center struct {
 
 // NewCenter returns a new frame around the given primitive.
 func NewCenter(primitive Primitive, width, height int) *Center {
-	return &Center{Box: NewBox(), primitive: primitive, width: width, height: height}
+	c := &Center{Box: NewBox(), primitive: primitive, width: width, height: height}
+	c.Box.Primitive = c
+	return c
 }
 
 func (c *Center) Resize(width, height int) *Center {
@@ -62,20 +64,25 @@ func (c *Center) Draw(screen tcell.Screen) {
 		height = inHeight
 	}
 
+	c.Box.Draw(screen)
 	c.primitive.SetRect(x, y, width, height)
 	c.primitive.Draw(screen)
 }
 
 // Focus is called when this primitive receives focus.
 func (c *Center) Focus(delegate func(p Primitive)) {
-	c.setFocus = delegate
 	delegate(c.primitive)
-	c.Box.Focus(delegate)
 }
 
-// HasFocus returns whether or not this primitive has focus.
-func (c *Center) HasFocus() bool {
-	return c.primitive.HasFocus()
+// focusChain implements the [Primitive]'s focusChain method.
+func (c *Center) focusChain(chain *[]Primitive) bool {
+	if hasFocus := c.primitive.focusChain(chain); hasFocus {
+		if chain != nil {
+			*chain = append(*chain, c)
+		}
+		return true
+	}
+	return c.Box.focusChain(chain)
 }
 
 // MouseHandler returns the mouse handler for this primitive.
