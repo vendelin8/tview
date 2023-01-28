@@ -224,9 +224,43 @@ func (g *Grid) RemoveItem(p Primitive) *Grid {
 	return g
 }
 
+// ReplaceItem replaces all items for the given primitive from the grid, keeping
+// the order of the remaining items intact.
+func (g *Grid) ReplaceItem(toRemove, toAdd Primitive, count int) *Grid {
+	for index := len(g.items) - 1; index >= 0 && count > 0; index-- {
+		if g.items[index].Item == toRemove {
+			g.items[index].Item = toAdd
+			count--
+		}
+	}
+	return g
+}
+
+// ReplaceItem replaces all items for the given primitive from the grid, keeping
+// the order of the remaining items intact.
+func (g *Grid) ReplaceItemAt(p Primitive, row, column int) *Grid {
+	for index := len(g.items) - 1; index >= 0; index-- {
+		item := g.items[index]
+		if item.Row == row && item.Column == column {
+			item.Item = p
+			return g
+		}
+	}
+	return g
+}
+
 // Clear removes all items from the grid.
 func (g *Grid) Clear() *Grid {
 	g.items = nil
+	return g
+}
+
+// ClearAfter removes all items starting with the given index.
+func (g *Grid) ClearAfter(index int) *Grid {
+	if len(g.items) <= index {
+		return g
+	}
+	g.items = g.items[:index]
 	return g
 }
 
