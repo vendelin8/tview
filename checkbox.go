@@ -1,6 +1,7 @@
 package tview
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/gdamore/tcell/v2"
@@ -127,7 +128,7 @@ func (c *Checkbox) SetFormAttributes(labelWidth int, labelColor, bgColor, fieldT
 
 // GetFieldWidth returns this primitive's field width.
 func (c *Checkbox) GetFieldWidth() int {
-	return 1
+	return 3
 }
 
 // GetFieldHeight returns this primitive's field height.
@@ -195,7 +196,8 @@ func (c *Checkbox) Draw(screen tcell.Screen) {
 	if !c.checked {
 		checkedString = strings.Repeat(" ", checkboxWidth)
 	}
-	printWithStyle(screen, checkedString, x, y, 0, checkboxWidth, AlignLeft, fieldStyle, false)
+	checkedString = fmt.Sprintf("[%s[]", checkedString)
+	printWithStyle(screen, checkedString, x, y, 0, checkboxWidth+2, AlignLeft, fieldStyle, false)
 }
 
 // InputHandler returns the handler for this primitive.
