@@ -1,7 +1,11 @@
 package tview
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/gdamore/tcell/v2"
+	"github.com/rivo/uniseg"
 )
 
 // Checkbox implements a simple box for boolean values which can be checked and
@@ -181,7 +185,7 @@ func (c *Checkbox) SetFormAttributes(labelWidth int, labelColor, bgColor, fieldT
 
 // GetFieldWidth returns this primitive's field width.
 func (c *Checkbox) GetFieldWidth() int {
-	return 1
+	return 3
 }
 
 // GetFieldHeight returns this primitive's field height.
@@ -265,9 +269,12 @@ func (c *Checkbox) Draw(screen tcell.Screen) {
 	// Draw checkbox.
 	str := c.uncheckedString
 	style := c.uncheckedStyle
+	checkboxWidth := uniseg.StringWidth(c.checkedString)
 	if c.checked {
 		str = c.checkedString
 		style = c.checkedStyle
+	} else {
+		str = strings.Repeat(" ", checkboxWidth)
 	}
 	if c.disabled {
 		style = style.Background(c.backgroundColor)
@@ -275,7 +282,8 @@ func (c *Checkbox) Draw(screen tcell.Screen) {
 	if c.HasFocus() {
 		style = c.focusStyle
 	}
-	printWithStyle(screen, str, x, y, 0, width, AlignLeft, style, c.disabled)
+	str = fmt.Sprintf("[%s[]", str)
+	printWithStyle(screen, str, x, y, 0, checkboxWidth+2, AlignLeft, style, c.disabled)
 }
 
 // InputHandler returns the handler for this primitive.
