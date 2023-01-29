@@ -4,7 +4,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/rivo/tview"
+	"github.com/vendelin8/tview"
 )
 
 const pageCount = 5
