@@ -5,7 +5,7 @@ import (
 	"encoding/base64"
 	"image/jpeg"
 
-	"github.com/rivo/tview"
+	"github.com/vendelin8/tview"
 )
 
 const form = `[green]package[white] main
