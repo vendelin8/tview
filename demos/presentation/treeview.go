@@ -4,7 +4,7 @@ import (
 	"strings"
 
 	"github.com/gdamore/tcell/v2"
-	"github.com/rivo/tview"
+	"github.com/vendelin8/tview"
 )
 
 const treeAllCode = `[green]package[white] main
