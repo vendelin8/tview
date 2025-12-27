@@ -183,6 +183,7 @@ func (m *Modal) Draw(screen tcell.Screen) {
 
 	// Set the modal's position and size.
 	height := len(lines) + 6
+
 	width += 4
 	x := (screenWidth - width) / 2
 	y := (screenHeight - height) / 2

@@ -558,7 +558,7 @@ func TaggedStringWidth(text string) (width int) {
 //
 // [Unicode Standard Annex #14]: https://www.unicode.org/reports/tr14/
 func WordWrap(text string, width int) (lines []string) {
-	if width <= 0 {
+	if width <= 0 || len(text) == 0 {
 		return
 	}
 

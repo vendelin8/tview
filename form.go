@@ -512,6 +512,19 @@ func (f *Form) SetCancelFunc(callback func()) *Form {
 	return f
 }
 
+// calcMaxLabelWidth finds the longest label.
+func (f *Form) calcMaxLabelWidth() int {
+	var maxLabelWidth int
+	for _, item := range f.items {
+		labelWidth := TaggedStringWidth(item.GetLabel())
+		if labelWidth > maxLabelWidth {
+			maxLabelWidth = labelWidth
+		}
+	}
+
+	return maxLabelWidth + 1 // Add one space.
+}
+
 // Draw draws this primitive onto the screen.
 func (f *Form) Draw(screen tcell.Screen) {
 	f.Box.DrawForSubclass(screen, f)
@@ -523,15 +536,7 @@ func (f *Form) Draw(screen tcell.Screen) {
 	rightLimit := x + width
 	startX := x
 
-	// Find the longest label.
-	var maxLabelWidth int
-	for _, item := range f.items {
-		labelWidth := TaggedStringWidth(item.GetLabel())
-		if labelWidth > maxLabelWidth {
-			maxLabelWidth = labelWidth
-		}
-	}
-	maxLabelWidth++ // Add one space.
+	maxLabelWidth := f.calcMaxLabelWidth()
 
 	// Calculate positions of form items.
 	type position struct{ x, y, width, height int }
