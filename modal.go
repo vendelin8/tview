@@ -59,6 +59,11 @@ func (m *Modal) SetBackgroundColor(color tcell.Color) *Modal {
 	return m
 }
 
+// Form getter return the modal's form.
+func (m *Modal) Form() *Form {
+	return m.form
+}
+
 // SetTextColor sets the color of the message text.
 func (m *Modal) SetTextColor(color tcell.Color) *Modal {
 	m.textColor = color
